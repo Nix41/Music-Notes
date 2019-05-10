@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
+from Config import *
 
-def detect_notes(input_image, staffs):
+def detect_notes(input_image, staffs, minN, maxN):
     print("Detecting blobs.")
     im_with_blobs = input_image.copy()
 
@@ -24,8 +25,8 @@ def detect_notes(input_image, staffs):
     # Set up the SimpleBlobDetector with default parameters.
     params = cv2.SimpleBlobDetector_Params()
     params.filterByArea = True
-    params.minArea = 150
-    params.maxArea = 1500
+    params.minArea = minN
+    params.maxArea = maxN
     params.filterByCircularity = True
     params.minCircularity = 0.6
     params.filterByConvexity = True
@@ -36,8 +37,8 @@ def detect_notes(input_image, staffs):
     detector = cv2.SimpleBlobDetector_create(params)
     keypoints = detector.detect(im_with_blobs)
 
-    cv2.drawKeypoints(im_with_blobs, keypoints=keypoints, outImage=im_with_blobs, color=(0, 0, 255),
-                      flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    cv2.drawKeypoints(im_with_blobs, keypoints=keypoints, outImage=im_with_blobs,
+                      flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS, )
 
     cv2.imwrite("output/8b_with_blobs.jpg", im_with_blobs)
 

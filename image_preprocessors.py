@@ -4,14 +4,12 @@ import numpy as np
 
 
 def adjust_photo(image):
-    print("Adjusting photo")
     gray = cv2.cvtColor(image.copy(), cv2.COLOR_RGB2GRAY)
     blur = cv2.GaussianBlur(gray, GAUSSIAN_BLUR_KERNEL, 0)
     edged = cv2.Canny(blur, 0, 50)
     cv2.imwrite("output/1canny.jpg", edged)
     contours, _ = cv2.findContours(edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
     contours = sorted(contours, key=cv2.contourArea, reverse=True)
-
     for cnt in contours:
         # Douglas Pecker algorithm - reduces the number of points in a curve
         epsilon = cv2.arcLength(cnt, True)
